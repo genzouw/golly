@@ -39,7 +39,7 @@ export default {
       'choices': [],
       // 'apiUrl': '//localhost:8081',
       'apiUrl': '',
-      'choices_butotn_disabled': false
+      'choices_button_disabled': false
     }
   },
   created () {

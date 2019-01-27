@@ -53,8 +53,9 @@ if (!is_null($id)) {
         $data = $stmt->fetch(PDO::FETCH_ASSOC) ?: array();
     }
 
-    $sql = 'select id, choice' . (isset($_GET['all']) ? ', selected_number' : '')
-        . ' from choices where questionnaire_id = ? order by id';
+    // $sql = 'select id, choice' . (isset($_GET['all']) ? ', selected_number' : '')
+        // . ' from choices where questionnaire_id = ? order by id';
+    $sql = 'select id, choice, selected_number from choices where questionnaire_id = ? order by id';
     $stmt = $pdo->prepare($sql);
     if ($stmt && $stmt->execute([$id])) {
         $data['choices'] = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: array();

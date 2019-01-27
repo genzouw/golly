@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     'separatedChoices': function () {
-      return this.choices.trim().length > 0 ? this.choices.trim().split(/[ ]+/mgi) : []
+      return this.choices.trim().length > 0 ? this.choices.trim().split(/[ 　]+/mgi) : []
     }
   },
   methods: {

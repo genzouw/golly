@@ -16,11 +16,11 @@
 
     <div class="row mb-1" v-for="(it, index) in choices" :key="index">
       <div class="col-sm-7">
-        <button class="btn btn-primary" style="width: 3em;" @click.self="click(it.id)" :disabled="choices_butotn_disabled">{{ index+1 }}</button>
+        <button class="btn btn-primary" style="width: 3em;" @click.self="click(it.id)" :disabled="choices_button_disabled">{{ index+1 }}</button>
         <span>{{ it.choice }}</span>
       </div>
       <div class="col-auto">
-        <span class="text-success font-weight-bold">{{ (it.selected_number) ?  ('投票数 : ' + it.selected_number + ' 件') : ''  }}</span>
+        <span class="text-success font-weight-bold" v-if="choices_button_disabled && it.selected_number">投票数 : {{it.selected_number}} 件</span>
       </div>
     </div>
   </div>
@@ -51,6 +51,13 @@ export default {
       let data = {
         'id': that.id
       }
+
+      if (localStorage[that.id]) {
+        this.choices_button_disabled = true
+        that.message = 'ご協力ありがとうございました。 m(_ _)m / 最新の投票結果は以下の通りです。'
+        that.message_classes = 'alert alert-success'
+      }
+
       if (all) {
         data['all'] = true
       }
@@ -73,9 +80,11 @@ export default {
         type: 'PUT',
         dataType: 'json',
         success: function (data) {
-          that.choices_butotn_disabled = true
-          that.message = 'ご協力ありがとうございました。 m(_ _)m'
+          that.choices_button_disabled = true
+          that.message = 'ご協力ありがとうございました。 m(_ _)m / 最新の投票結果は以下の通りです。'
           that.message_classes = 'alert alert-success'
+
+          localStorage[that.id] = true
 
           that.refresh(true)
         },

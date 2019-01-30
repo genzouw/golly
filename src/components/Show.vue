@@ -20,10 +20,12 @@
         <span>{{ it.choice }}</span>
       </div>
       <div class="col-sm-4">
-        <div class="text-secondary font-weight-bold float-right" v-if="choices_button_disabled && it.selected_number">投票数 : <div style="width: 4em; text-align: right;">{{it.selected_number}} 件</div></div>
+        <div class="text-secondary font-weight-bold float-right" v-if="choices_button_disabled && it.selected_number">投票数 : {{it.selected_number}} 件</div>
       </div>
 
-      <hr />
+      <div class="col-sm-12">
+        <hr class="my-4 bg-info">
+      </div>
     </div>
   </div>
 </template>
@@ -34,7 +36,7 @@ var $ = require('jquery')
 export default {
   data () {
     return {
-      'id': this.$route.params.id,
+      'qcode': this.$route.params.id,
       'message': '',
       'message_classes': '',
       'question': '',
@@ -51,10 +53,10 @@ export default {
     'refresh': function (all) {
       let that = this
       let data = {
-        'id': that.id
+        'qcode': that.qcode
       }
 
-      if (localStorage[that.id]) {
+      if (localStorage[that.qcode]) {
         this.choices_button_disabled = true
         that.message = 'ご協力ありがとうございました。 m(_ _)m / 最新の投票結果は以下の通りです。'
         that.message_classes = 'alert alert-success'
@@ -86,7 +88,7 @@ export default {
           that.message = 'ご協力ありがとうございました。 m(_ _)m / 最新の投票結果は以下の通りです。'
           that.message_classes = 'alert alert-success'
 
-          localStorage[that.id] = true
+          localStorage[that.qcode] = true
 
           that.refresh(true)
         },

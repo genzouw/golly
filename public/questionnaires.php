@@ -13,6 +13,7 @@ header('Content-Type: application/json;charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 
 $id = null;
+$qcode = null;
 $data = array();
 
 switch (mb_strtolower($_SERVER['REQUEST_METHOD'])) {
@@ -28,8 +29,11 @@ switch (mb_strtolower($_SERVER['REQUEST_METHOD'])) {
         $question = $_POST['question'];
         $choices = $_POST['choices'];
 
-        $sql = 'insert into questionnaires (question) values (?);';
-        $pdo->prepare($sql)->execute([$question]);
+        $sql = 'insert into questionnaires (question, qcode) values (?, ?);';
+        $pdo->prepare($sql)->execute([
+            $question,
+            uniqid(rand(), true)
+        ]);
         $id = $pdo->lastInsertId('id');
 
         foreach ($choices as $choice) {
@@ -42,14 +46,14 @@ switch (mb_strtolower($_SERVER['REQUEST_METHOD'])) {
         break;
 }
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+if (isset($_GET['qcode'])) {
+    $qcode = $_GET['qcode'];
 }
 
-if (!is_null($id)) {
-    $sql = 'select * from questionnaires where id = ?';
+if (!is_null($id) || !is_null($qcode)) {
+    $sql = 'select * from questionnaires where id = ? or qcode = ?';
     $stmt = $pdo->prepare($sql);
-    if ($stmt && $stmt->execute([$id])) {
+    if ($stmt && $stmt->execute([$id, $qcode])) {
         $data = $stmt->fetch(PDO::FETCH_ASSOC) ?: array();
     }
 
@@ -57,7 +61,7 @@ if (!is_null($id)) {
         // . ' from choices where questionnaire_id = ? order by id';
     $sql = 'select id, choice, selected_number from choices where questionnaire_id = ? order by id';
     $stmt = $pdo->prepare($sql);
-    if ($stmt && $stmt->execute([$id])) {
+    if ($stmt && $stmt->execute([$data['id']])) {
         $data['choices'] = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: array();
     }
 }

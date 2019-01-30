@@ -51,7 +51,7 @@
             <ol>
               <li v-for="(it, index) in choices" v-bind:key="index">
                 <div class="form-inline input-group">
-                  <input type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required v-validate="'required|min:3'" data-vv-as="回答の選択肢" />
+                  <input type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required v-validate="'required|min:1'" data-vv-as="回答の選択肢" />
                   <div class="input-group-append">
                     <div class="input-group-text bg-secondary" @click.prevent.self="removeChoice(index)">×</div>
                   </div>
@@ -114,12 +114,12 @@ export default {
           },
           success: function (data, status) {
             that.input_submit_disabled = true
-            that.message = 'アンケート( id = ' + data.id + ')の作成が完了しました！( 3秒後に遷移します。 )'
+            that.message = 'アンケート( code = ' + data.qcode + ')の作成が完了しました！( 3秒後に遷移します。 )'
             that.message_classes = 'alert alert-success'
             setTimeout(function () {
               that.$router.push(
                 {
-                  'path': '/show/' + data.id
+                  'path': '/show/' + data.qcode
                 }
               )
             }, 3000)

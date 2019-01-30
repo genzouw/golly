@@ -7,11 +7,8 @@
     </div>
 
     <div class="row">
-      <div class="col d-flex justify-content-center col-sm-12">
+      <div class="offset-sm-3 col-auto offset-sm-3">
         <p>Gollyは <span class="lead text-primary">簡単に使えるアンケートサービス</span> です。</p>
-
-      </div>
-      <div class="col d-flex justify-content-center col-sm-12">
         <p>使い方は簡単。</p>
       </div>
     </div>
@@ -46,24 +43,22 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="question" class="control-label">質問</label>
-            <input type="text" id="question" name="question" placeholder="質問" class="form-control" v-model="question" required v-validate="'required|min:3'" data-vv-as="質問" />
+            <input type="text" id="question" name="question" placeholder="質問" class="form-control form-control" v-model="question" required v-validate="'required|min:3'" data-vv-as="質問" @keypress.enter.prevent.self />
             <div class="invalid-feedback">{{ errors.first('question') }}</div>
           </div>
           <div class="form-group">
-            <label for="choices" class="control-label">回答の選択肢(スペース区切りで入力)</label>
+            <button class="btn btn-primary btn-sm float-right mb-1" @click.prevent.self="appendChoice">選択肢を追加</button>
             <ol>
               <li v-for="(it, index) in choices" v-bind:key="index">
                 <div class="form-inline input-group">
-                <input type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required v-validate="'required|min:3'" data-vv-as="回答の選択肢" />
-                <div class="input-group-append">
-                  <div class="input-group-text bg-secondary" @click.prevent.self="removeChoice(index)">×</div>
-                </div>
+                  <input type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required v-validate="'required|min:3'" data-vv-as="回答の選択肢" />
+                  <div class="input-group-append">
+                    <div class="input-group-text bg-secondary" @click.prevent.self="removeChoice(index)">×</div>
+                  </div>
                 </div>
                 <div class="invalid-feedback">{{ errors.first('choice' + index) }}</div>
               </li>
             </ol>
-            <button class="btn btn-primary btn-sm float-right" @click.prevent.self="appendChoice">選択肢を追加</button>
           </div>
         </div>
       </div>

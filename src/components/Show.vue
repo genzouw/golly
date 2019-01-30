@@ -15,13 +15,15 @@
     </div>
 
     <div class="row mb-1" v-for="(it, index) in choices" :key="index">
-      <div class="col-sm-7">
+      <div class="col-sm-8">
         <button class="btn btn-primary" style="width: 3em;" @click.self="click(it.id)" :disabled="choices_button_disabled">{{ index+1 }}</button>
         <span>{{ it.choice }}</span>
       </div>
-      <div class="col-auto">
-        <span class="text-success font-weight-bold" v-if="choices_button_disabled && it.selected_number">投票数 : {{it.selected_number}} 件</span>
+      <div class="col-sm-4">
+        <div class="text-secondary font-weight-bold float-right" v-if="choices_button_disabled && it.selected_number">投票数 : <div style="width: 4em; text-align: right;">{{it.selected_number}} 件</div></div>
       </div>
+
+      <hr />
     </div>
   </div>
 </template>

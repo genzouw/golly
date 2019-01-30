@@ -1,11 +1,9 @@
 <template>
   <div class="row">
     <div class="col ml-0 mr-0">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <router-link to="/">
-          <a class="navbar-brand" href="/">
-            <h1 class="p-0 m-0" style="font-size: 1.5em;">Golly</h1>
-          </a>
+          <a class="navbar-brand" href="/">Golly</a>
         </router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         </button>

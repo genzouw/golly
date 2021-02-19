@@ -1,0 +1,21 @@
+---
+version: "3"
+services:
+  web:
+    build:
+      context: .
+    restart: always
+    ports:
+      - 10102:80
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: golly_db
+      MYSQL_USER: golly_user
+      MYSQL_PASSWORD: golly_pass
+    volumes:
+      - dbdata:/var/lib/mysql
+volumes:
+  dbdata:
+    driver: local

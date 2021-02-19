@@ -1,11 +1,13 @@
 <?php
 
-$dsn = 'sqlite:' . __DIR__ . '/../' . 'golly.sqlite';
+$dsn = 'mysql:dbname=golly_db;host=db;port=3306';
+$user = 'golly_user';
+$password = 'golly_pass';
 
 try {
-    $pdo = new PDO($dsn);
+    $pdo = new PDO($dsn, $user, $password);
 } catch (PDOException $e) {
-    echo 'Error:' . $e->getMessage();
+    print('Error:'.$e->getMessage());
     die();
 }
 
@@ -58,7 +60,7 @@ if (!is_null($id) || !is_null($qcode)) {
     }
 
     // $sql = 'select id, choice' . (isset($_GET['all']) ? ', selected_number' : '')
-        // . ' from choices where questionnaire_id = ? order by id';
+    // . ' from choices where questionnaire_id = ? order by id';
     $sql = 'select id, choice, selected_number from choices where questionnaire_id = ? order by id';
     $stmt = $pdo->prepare($sql);
     if ($stmt && $stmt->execute([$data['id']])) {

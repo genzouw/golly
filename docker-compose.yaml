@@ -8,9 +8,9 @@ services:
     ports:
       - 10102:80
     environment:
-      DB_DSN: ${DB_DSN:-mysql:dbname=golly_db;host=db;port=3306}
-      DB_USER: ${DB_USER:-golly_user}
-      DB_PASS: ${DB_PASS:-golly_pass}
+      DB_DSN: ${DB_DSN:-mysql:dbname=${MYSQL_DATABASE:-golly_db};host=db;port=3306}
+      DB_USER: ${DB_USER:-${MYSQL_USER:-golly_user}}
+      DB_PASS: ${DB_PASS:-${MYSQL_PASSWORD:-golly_pass}}
   db:
     image: mysql:5.7
     environment:

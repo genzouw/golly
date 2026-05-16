@@ -1,8 +1,8 @@
 <?php
 
-$dsn = 'mysql:dbname=golly_db;host=db;port=3306';
-$user = 'golly_user';
-$password = 'golly_pass';
+$dsn = getenv('DB_DSN');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASS');
 
 try {
     $pdo = new PDO($dsn, $user, $password);

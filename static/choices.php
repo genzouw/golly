@@ -1,8 +1,12 @@
 <?php
 
-$dsn = 'mysql:dbname=golly_db;host=db;port=3306';
-$user = 'golly_user';
-$password = 'golly_pass';
+$dsn = getenv('DB_DSN');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASS');
+
+if ($dsn === false || $user === false || $password === false) {
+    die('Error: Database configuration not found. Please ensure DB_DSN, DB_USER, and DB_PASS environment variables are set.');
+}
 
 try {
     $pdo = new PDO($dsn, $user, $password);

@@ -7,13 +7,18 @@ function create_pdo(): PDO
     $password = getenv('DB_PASS');
 
     if ($dsn === false || $user === false || $password === false) {
-        die('Error: Database configuration not found. Please ensure DB_DSN, DB_USER, and DB_PASS environment variables are set.');
+        error_log('Database configuration not found.');
+        header('Content-Type: application/json; charset=UTF-8', true, 500);
+        echo json_encode(['error' => 'Internal Server Error']);
+        exit;
     }
 
     try {
         return new PDO($dsn, $user, $password);
     } catch (PDOException $e) {
-        print('Error:'.$e->getMessage());
-        die();
+        error_log('DB connection error: '.$e->getMessage());
+        header('Content-Type: application/json; charset=UTF-8', true, 500);
+        echo json_encode(['error' => 'Internal Server Error']);
+        exit;
     }
 }

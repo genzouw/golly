@@ -1,19 +1,8 @@
 <?php
 
-$dsn = getenv('DB_DSN');
-$user = getenv('DB_USER');
-$password = getenv('DB_PASS');
+require_once __DIR__.'/db.php';
 
-if ($dsn === false || $user === false || $password === false) {
-    die('Error: Database configuration not found. Please ensure DB_DSN, DB_USER, and DB_PASS environment variables are set.');
-}
-
-try {
-    $pdo = new PDO($dsn, $user, $password);
-} catch (PDOException $e) {
-    print('Error:'.$e->getMessage());
-    die();
-}
+$pdo = create_pdo();
 
 header('Content-Type: application/json;charset=UTF-8');
 header('Access-Control-Allow-Origin: *');

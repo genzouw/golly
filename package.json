@@ -81,12 +81,18 @@
     "webpack-merge": "^4.1.0"
   },
   "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 14.0.0",
+    "npm": ">= 7.0.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "overrides": {
+    "loader-utils": "^1.4.2"
+  },
+  "resolutions": {
+    "loader-utils": "^1.4.2"
+  }
 }

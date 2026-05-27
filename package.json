@@ -90,10 +90,12 @@
   ],
   "overrides": {
     "loader-utils": "^1.4.2",
-    "tmp": "^0.2.6"
+    "tmp": "^0.2.6",
+    "fsevents": "^2.3.3"
   },
   "resolutions": {
     "loader-utils": "^1.4.2",
-    "tmp": "^0.2.6"
+    "tmp": "^0.2.6",
+    "fsevents": "^2.3.3"
   }
 }

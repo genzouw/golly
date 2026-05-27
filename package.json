@@ -92,12 +92,16 @@
     "kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
     "tmp": "^0.2.6",
-    "fsevents": "^2.3.3"
+    "fsevents": "^2.3.3",
+    "json5@<1.0.2": "^1.0.2",
+    "json5@>=2.0.0 <2.2.2": "^2.2.3"
   },
   "resolutions": {
     "**/kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
     "tmp": "^0.2.6",
-    "fsevents": "^2.3.3"
+    "fsevents": "^2.3.3",
+    "babel-core/json5": "^1.0.2",
+    "find-babel-config/json5": "^1.0.2"
   }
 }

@@ -83,11 +83,7 @@
     "node": ">= 14.0.0",
     "npm": ">= 7.0.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
   "overrides": {
     "kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
@@ -101,6 +97,9 @@
     },
     "eslint-plugin-node": {
       "semver": "^5.7.2"
+    },
+    "extract-text-webpack-plugin": {
+      "schema-utils": "^3.3.0"
     }
   }
 }

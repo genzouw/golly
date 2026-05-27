@@ -49,13 +49,13 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.0.0",
-    "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^29.3.1",
     "jest-serializer-vue": "^0.3.0",
     "loader-utils": "^1.4.2",
+    "mini-css-extract-plugin": "^2.9.0",
     "nightwatch": "^3.16.0",
     "node-notifier": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
@@ -97,9 +97,6 @@
     },
     "eslint-plugin-node": {
       "semver": "^5.7.2"
-    },
-    "extract-text-webpack-plugin": {
-      "schema-utils": "^3.3.0"
     }
   }
 }

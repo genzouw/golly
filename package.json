@@ -25,7 +25,7 @@
     "babel-core": "^6.22.1",
     "babel-eslint": "^10.1.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
-    "babel-jest": "^21.0.2",
+    "babel-jest": "^29.3.1",
     "babel-loader": "^7.1.1",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -38,7 +38,7 @@
     "chalk": "^2.0.1",
     "chromedriver": "^119.0.1",
     "copy-webpack-plugin": "^4.0.1",
-    "cross-spawn": "^5.0.1",
+    "cross-spawn": "^7.0.6",
     "css-loader": "^7.1.4",
     "eslint": "^9.26.0",
     "eslint-config-standard": "^10.2.1",
@@ -83,7 +83,11 @@
     "node": ">= 14.0.0",
     "npm": ">= 7.0.0"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "overrides": {
     "kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
@@ -91,6 +95,7 @@
     "fsevents": "^2.3.3",
     "json5": "^2.2.3",
     "serialize-javascript": "^7.0.5",
+    "braces": "^3.0.3",
     "cacache": {
       "ssri": "^6.0.2"
     },

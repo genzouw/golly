@@ -90,7 +90,8 @@
     "tmp": "^0.2.6",
     "fsevents": "^2.3.3",
     "json5": "^2.2.3",
-    "serialize-javascript": "^7.0.5"
+    "serialize-javascript": "^7.0.5",
+    "ssri": "^6.0.2"
   },
   "resolutions": {
     "**/kind-of": "^6.0.3",
@@ -98,6 +99,7 @@
     "tmp": "^0.2.6",
     "fsevents": "^2.3.3",
     "**/json5": "^2.2.3",
-    "**/serialize-javascript": "^7.0.5"
+    "**/serialize-javascript": "^7.0.5",
+    "**/ssri": "^6.0.2"
   }
 }

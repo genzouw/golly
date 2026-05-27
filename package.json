@@ -83,11 +83,7 @@
     "node": ">= 14.0.0",
     "npm": ">= 7.0.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
   "overrides": {
     "kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
@@ -102,6 +98,7 @@
     "tmp": "^0.2.6",
     "fsevents": "^2.3.3",
     "babel-core/json5": "^1.0.2",
-    "find-babel-config/json5": "^1.0.2"
+    "find-babel-config/json5": "^1.0.2",
+    "@babel/core/json5": "^2.2.3"
   }
 }

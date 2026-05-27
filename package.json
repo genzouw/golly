@@ -83,7 +83,11 @@
     "node": ">= 14.0.0",
     "npm": ">= 7.0.0"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"],
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "overrides": {
     "kind-of": "^6.0.3",
     "loader-utils": "^1.4.2",
@@ -91,7 +95,9 @@
     "fsevents": "^2.3.3",
     "json5": "^2.2.3",
     "serialize-javascript": "^7.0.5",
-    "ssri": "^6.0.2"
+    "cacache": {
+      "ssri": "^6.0.2"
+    }
   },
   "resolutions": {
     "**/kind-of": "^6.0.3",
@@ -100,6 +106,6 @@
     "fsevents": "^2.3.3",
     "**/json5": "^2.2.3",
     "**/serialize-javascript": "^7.0.5",
-    "**/ssri": "^6.0.2"
+    "**/cacache/ssri": "^6.0.2"
   }
 }

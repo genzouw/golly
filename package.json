@@ -89,9 +89,11 @@
     "not ie <= 8"
   ],
   "overrides": {
-    "loader-utils": "^1.4.2"
+    "loader-utils": "^1.4.2",
+    "tmp": "^0.2.6"
   },
   "resolutions": {
-    "loader-utils": "^1.4.2"
+    "loader-utils": "^1.4.2",
+    "tmp": "^0.2.6"
   }
 }

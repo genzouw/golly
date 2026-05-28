@@ -69,10 +69,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         collapseWhitespace: true,
         removeAttributeQuotes: true,
         // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+        // https://github.com/terser/html-minifier-terser#options-quick-reference
       },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -125,11 +123,11 @@ if (config.build.productionGzip) {
       asset: '[path].gz[query]',
       algorithm: 'gzip',
       test: new RegExp(
-        '\\.(' + config.build.productionGzipExtensions.join('|') + ')$',
+        '\\.(' + config.build.productionGzipExtensions.join('|') + ')$'
       ),
       threshold: 10240,
       minRatio: 0.8,
-    }),
+    })
   );
 }
 

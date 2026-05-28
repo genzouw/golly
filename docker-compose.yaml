@@ -7,13 +7,17 @@ services:
     restart: always
     ports:
       - 10102:80
+    environment:
+      DB_DSN: ${DB_DSN:-mysql:dbname=${MYSQL_DATABASE:-golly_db};host=db;port=3306}
+      DB_USER: ${DB_USER:-${MYSQL_USER:-golly_user}}
+      DB_PASS: ${DB_PASS:-${MYSQL_PASSWORD:-golly_pass}}
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: golly_db
-      MYSQL_USER: golly_user
-      MYSQL_PASSWORD: golly_pass
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-golly_db}
+      MYSQL_USER: ${MYSQL_USER:-golly_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-golly_pass}
     volumes:
       - dbdata:/var/lib/mysql
 volumes:

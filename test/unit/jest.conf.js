@@ -12,7 +12,7 @@ module.exports = {
   },
   transform: {
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
-    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
+    '.*\\.(vue)$': '<rootDir>/node_modules/@vue/vue3-jest'
   },
   testPathIgnorePatterns: [
     '<rootDir>/test/e2e'

@@ -96,7 +96,7 @@
       "ssri": "^6.0.2"
     },
     "eslint-plugin-node": {
-      "semver": "^5.7.2"
+      "semver": "^7.8.1"
     }
   }
 }

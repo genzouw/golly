@@ -32,7 +32,7 @@
     "babel-jest": "^29.3.1",
     "babel-loader": "^10.0.0",
     "chalk": "^2.0.1",
-    "chromedriver": "^153.0.1",
+    "chromedriver": "^154.0.0",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^7.0.6",
     "css-loader": "^7.1.4",

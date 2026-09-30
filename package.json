@@ -42,7 +42,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-n": "^18.0.0",
     "eslint-plugin-promise": "^7.0.0",
-    "eslint-plugin-vue": "^4.0.0",
+    "eslint-plugin-vue": "^10.0.0",
     "eslint-webpack-plugin": "^6.0.0",
     "file-loader": "^6.0.0",
     "friendly-errors-webpack-plugin": "^1.6.1",

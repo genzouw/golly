@@ -50,6 +50,17 @@
       ],
       "matchPackageNames": ["eslint"],
       "allowedVersions": "<10"
+    },
+    {
+      "description": [
+        "loader-utils を 2 系に固定する (package.json の overrides)。",
+        "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
+        "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",
+        "CI にビルドのジョブが無く破損を検出できないため、3 つのローダーを移行するまで major 更新を止める (#147)。"
+      ],
+      "matchPackageNames": ["loader-utils"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }

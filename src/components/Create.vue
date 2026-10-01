@@ -14,18 +14,18 @@
       </div>
     </div>
 
-    <form @submit.prevent>
+    <VeeForm ref="form" @submit="ignoreSubmit">
       <div class="row">
         <div class="col">
           <div class="form-group">
             <label for="question" class="control-label">質問</label>
-            <input type="text" id="question" name="question" placeholder="質問" class="form-control" v-model="question" required v-validate="'required|min:3'" data-vv-as="質問" />
-            <div class="invalid-feedback">{{ errors.first('question') }}</div>
+            <VeeField type="text" id="question" name="question" placeholder="質問" class="form-control" v-model="question" required :rules="questionRules" />
+            <VeeErrorMessage as="div" name="question" class="invalid-feedback" />
           </div>
           <div class="form-group">
             <label for="choices" class="control-label">選択肢(スペース区切りで入力)</label>
-            <input type="text" id="choices" name="choices" placeholder="選択肢" class="form-control" v-model="choices" required v-validate="'required|min:3'" data-vv-as="選択肢" />
-            <div class="invalid-feedback">{{ errors.first('choices') }}</div>
+            <VeeField type="text" id="choices" name="choices" placeholder="選択肢" class="form-control" v-model="choices" required :rules="choicesRules" />
+            <VeeErrorMessage as="div" name="choices" class="invalid-feedback" />
           </div>
           <div class="row">
             <div class="col">
@@ -46,16 +46,22 @@
           </div>
         </div>
       </div>
-    </form>
+    </VeeForm>
   </div>
 </template>
 
 <script>
+import { Form as VeeForm, Field as VeeField, ErrorMessage as VeeErrorMessage } from 'vee-validate'
+import { requiredMin } from '@/validation'
+
 const $ = require('jquery')
 
 export default {
+  components: { VeeForm, VeeField, VeeErrorMessage },
   data () {
     return {
+      questionRules: requiredMin('質問', 3),
+      choicesRules: requiredMin('選択肢', 3),
       message: '',
       message_classes: '',
       question: '',
@@ -74,8 +80,8 @@ export default {
     regist: function (e) {
       const that = this
 
-      that.$validator.validate().then(function (ok) {
-        if (!ok) {
+      that.$refs.form.validate().then(function (result) {
+        if (!result.valid) {
           return false
         }
 
@@ -108,7 +114,10 @@ export default {
           }
         })
       })
-    }
+    },
+    // 送信は「登録」ボタンの regist で行う。VeeForm は submit ハンドラが無いと
+    // 検証通過後にネイティブ送信するため、何もしないハンドラを渡して止める
+    ignoreSubmit: function () {}
   }
 }
 </script>

@@ -51,28 +51,28 @@
 </template>
 
 <script>
-var $ = require('jquery')
+const $ = require('jquery')
 
 export default {
   data () {
     return {
-      'message': '',
-      'message_classes': '',
-      'question': '',
-      'choices': '',
+      message: '',
+      message_classes: '',
+      question: '',
+      choices: '',
       // 'apiUrl': '//localhost:8081',
-      'apiUrl': '',
-      'input_submit_disabled': false
+      apiUrl: '',
+      input_submit_disabled: false
     }
   },
   computed: {
-    'separatedChoices': function () {
+    separatedChoices: function () {
       return this.choices.trim().length > 0 ? this.choices.trim().split(/[ 　]+/mgi) : []
     }
   },
   methods: {
-    'regist': function (e) {
-      let that = this
+    regist: function (e) {
+      const that = this
 
       that.$validator.validate().then(function (ok) {
         if (!ok) {
@@ -84,8 +84,8 @@ export default {
           type: 'POST',
           dataType: 'json',
           data: $.param({
-            'question': that.question,
-            'choices': that.separatedChoices
+            question: that.question,
+            choices: that.separatedChoices
           }),
           complete: function () {
 
@@ -97,7 +97,7 @@ export default {
             setTimeout(function () {
               that.$router.push(
                 {
-                  'path': '/show/' + data.id
+                  path: '/show/' + data.id
                 }
               )
             }, 3000)

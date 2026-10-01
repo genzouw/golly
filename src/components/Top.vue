@@ -76,25 +76,25 @@
 </template>
 
 <script>
-var $ = require('jquery')
+const $ = require('jquery')
 
 export default {
   data () {
     return {
-      'message': '',
-      'message_classes': '',
-      'question': '',
-      'choices': [
+      message: '',
+      message_classes: '',
+      question: '',
+      choices: [
         { text: '' }
       ],
       // 'apiUrl': '//localhost:8081',
-      'apiUrl': '',
-      'input_submit_disabled': false
+      apiUrl: '',
+      input_submit_disabled: false
     }
   },
   methods: {
-    'regist': function (e) {
-      let that = this
+    regist: function (e) {
+      const that = this
 
       that.$validator.validate().then(function (ok) {
         if (!ok) {
@@ -106,8 +106,8 @@ export default {
           type: 'POST',
           dataType: 'json',
           data: $.param({
-            'question': that.question,
-            'choices': $.map(that.choices, (it) => { return it.text.trim() }).filter((it) => { return it && it.length > 0 })
+            question: that.question,
+            choices: $.map(that.choices, (it) => { return it.text.trim() }).filter((it) => { return it && it.length > 0 })
           }),
           complete: function () {
 
@@ -119,7 +119,7 @@ export default {
             setTimeout(function () {
               that.$router.push(
                 {
-                  'path': '/show/' + data.qcode
+                  path: '/show/' + data.qcode
                 }
               )
             }, 3000)
@@ -131,10 +131,10 @@ export default {
         })
       })
     },
-    'appendChoice': function () {
-      this.choices.push({ 'text': '' })
+    appendChoice: function () {
+      this.choices.push({ text: '' })
     },
-    'removeChoice': function (i) {
+    removeChoice: function (i) {
       console.log(i)
       this.choices.splice(i, 1)
     }

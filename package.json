@@ -90,7 +90,7 @@
     "micromatch": "^4.0.8",
     "babel-traverse": "npm:@babel/traverse@^7.23.2",
     "cacache": {
-      "ssri": "^14.0.0"
+      "ssri": "^6.0.2"
     }
   }
 }

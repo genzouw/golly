@@ -1,20 +1,9 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import { configure } from 'vee-validate'
 import App from './App'
 import router from './router'
-import VeeValidate from 'vee-validate'
-import VeeValidateLocaleJa from 'vee-validate-locale-ja'
 
-VeeValidate.Validator.localize('ja', VeeValidateLocaleJa)
-Vue.use(VeeValidate, {
-  locale: 'ja'
-})
+// vee-validate 2 と同じく入力のたびに検証する（4 の既定は change / blur 時のみ）
+configure({ validateOnInput: true })
 
-Vue.config.productionTip = false
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
+createApp(App).use(router).mount('#app')

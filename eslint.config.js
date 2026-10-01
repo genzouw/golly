@@ -6,7 +6,7 @@ const neostandard = require('neostandard')
 const pluginVue = require('eslint-plugin-vue')
 
 module.exports = [
-  { ignores: ['build/**', 'config/**', 'dist/**', 'coverage/**', 'node_modules/**'] },
+  { ignores: ['build/**', 'config/**', 'dist/**', '**/coverage/**', 'node_modules/**'] },
   // https://github.com/neostandard/neostandard
   ...neostandard({ noJsx: true }),
   // https://eslint.vuejs.org/user-guide/#usage

@@ -31,29 +31,29 @@
 </template>
 
 <script>
-var $ = require('jquery')
+const $ = require('jquery')
 
 export default {
   data () {
     return {
-      'qcode': this.$route.params.id,
-      'message': '',
-      'message_classes': '',
-      'question': '',
-      'choices': [],
+      qcode: this.$route.params.id,
+      message: '',
+      message_classes: '',
+      question: '',
+      choices: [],
       // 'apiUrl': '//localhost:8081',
-      'apiUrl': '',
-      'choices_button_disabled': false
+      apiUrl: '',
+      choices_button_disabled: false
     }
   },
   created () {
     this.refresh(false)
   },
   methods: {
-    'refresh': function (all) {
-      let that = this
-      let data = {
-        'qcode': that.qcode
+    refresh: function (all) {
+      const that = this
+      const data = {
+        qcode: that.qcode
       }
 
       if (localStorage[that.qcode]) {
@@ -69,7 +69,7 @@ export default {
         url: that.apiUrl + '/questionnaires.php',
         type: 'GET',
         dataType: 'json',
-        'data': $.param(data),
+        data: $.param(data),
         success: function (data) {
           that.question = data.question
           that.choices = data.choices
@@ -77,8 +77,8 @@ export default {
         }
       })
     },
-    'click': function (id) {
-      let that = this
+    click: function (id) {
+      const that = this
       $.ajax({
         url: that.apiUrl + '/choices.php?id=' + id,
         type: 'PUT',

@@ -13,21 +13,21 @@ export default new Router({
       path: '/',
       component: Top,
       meta: {
-        'title': 'トップ'
+        title: 'トップ'
       }
     },
     {
       path: '/create',
       component: Create,
       meta: {
-        'title': 'アンケート作成'
+        title: 'アンケート作成'
       }
     },
     {
       path: '/show/:id',
       component: Show,
       meta: {
-        'title': 'アンケート'
+        title: 'アンケート'
       }
     }
   ]

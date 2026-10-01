@@ -81,7 +81,7 @@
   ],
   "overrides": {
     "kind-of": "^6.0.3",
-    "loader-utils": "^3.0.0",
+    "loader-utils": "^2.0.4",
     "tmp": "^0.2.6",
     "fsevents": "^2.3.3",
     "json5": "^2.2.3",

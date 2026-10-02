@@ -7,17 +7,17 @@ on:
   push:
     branches: [main, master]
     paths:
-      - '**/Dockerfile'
-      - '**/Dockerfile.*'
-      - '.hadolint.yaml'
-      - '.github/workflows/hadolint.yml'
+      - "**/Dockerfile"
+      - "**/Dockerfile.*"
+      - ".hadolint.yaml"
+      - ".github/workflows/hadolint.yml"
   pull_request:
     branches: [main, master]
     paths:
-      - '**/Dockerfile'
-      - '**/Dockerfile.*'
-      - '.hadolint.yaml'
-      - '.github/workflows/hadolint.yml'
+      - "**/Dockerfile"
+      - "**/Dockerfile.*"
+      - ".hadolint.yaml"
+      - ".github/workflows/hadolint.yml"
 
 concurrency:
   group: hadolint-${{ github.ref }}
@@ -28,4 +28,4 @@ permissions:
 
 jobs:
   hadolint:
-    uses: genzouw/ci-workflows/.github/workflows/hadolint.yml@7159f7af3c1dea2a115b31c3574ce47bfb0cf09b # v1.4.3
+    uses: genzouw/ci-workflows/.github/workflows/hadolint.yml@012de279e12afe0f4268558cdccde9ff19bdc0e7 # v1.5.1

@@ -1,29 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "helpers:pinGitHubActionDigests"
-  ],
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
   "semanticCommits": "enabled",
   "semanticCommitScope": "deps",
   "timezone": "Asia/Tokyo",
-  "schedule": [
-    "* 9-11 * * *"
-  ],
-  "description": [
-    "minimumReleaseAge を 3 日にしたのは、1 日では短く、公開直後の不具合やサプライチェーン攻撃のリスクを十分に下げられないため。",
-    "minimumReleaseAgeBehaviour を timestamp-optional にしたのは、全リポジトリで設定を揃えるため。",
-    "公開日時を返さないレジストリ (Docker Hub / GHCR 等) でも更新 PR が止まらないが、その依存には待機期間が効かない。"
-  ],
   "minimumReleaseAge": "3 days",
   "minimumReleaseAgeBehaviour": "timestamp-optional",
-  "prConcurrentLimit": 10,
-  "labels": [
-    "dependencies"
-  ],
-  "reviewers": [
-    "genzouw"
-  ],
+  "html": {
+    "description": [
+      "html manager を無効化する。",
+      "index.html は Bootswatch 4 のテーマ CSS を CDN から読んでいる。",
+      "Bootswatch 5 は配布パスとクラス名が変わるため、URL だけ差し替えると画面が壊れる。",
+      "CI にブラウザ実行の検証が無くこの破損を検出できないため、対象外にする。"
+    ],
+    "enabled": false
+  },
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies"],
+  "reviewers": ["genzouw"],
   "vulnerabilityAlerts": {
     "description": [
       "脆弱性修正は minimumReleaseAge と schedule の対象外にして即時 PR にする。",
@@ -31,9 +25,7 @@
     ],
     "minimumReleaseAge": null,
     "schedule": [],
-    "addLabels": [
-      "security"
-    ]
+    "addLabels": ["security"]
   },
   "packageRules": [
     {
@@ -42,30 +34,51 @@
         "config:recommended に含まれる :semanticPrefixFixDepsChoreOthers は本番依存を fix にするが、",
         "fix は release 生成ツールがリリース対象として扱うため、Dependabot 時代と同じ chore に固定する。"
       ],
-      "matchPackageNames": [
-        "*"
-      ],
+      "matchPackageNames": ["*"],
       "semanticCommitType": "chore"
     },
     {
-      "description": "GitHub Actions の更新は ci プレフィックスで出す (Dependabot の commit-message.prefix: ci と同じ)",
-      "matchManagers": [
-        "github-actions"
-      ],
+      "description": "GitHub Actions の更新のプレフィックスとラベル (Dependabot の commit-message.prefix と同じ)",
+      "matchManagers": ["github-actions"],
       "semanticCommitType": "ci",
-      "addLabels": [
-        "github-actions"
-      ]
+      "addLabels": ["github-actions"]
     },
     {
-      "description": "Docker ベースイメージの更新には docker ラベルを付ける",
-      "matchManagers": [
-        "dockerfile",
-        "docker-compose"
+      "description": [
+        "eslint を 9 系に固定する。neostandard と @babel/eslint-parser が ESLint 10 に未対応のため、",
+        "10 へ更新すると lint が壊れる。両方が対応したらこのルールを外す (#108)。"
       ],
-      "addLabels": [
-        "docker"
-      ]
+      "matchPackageNames": ["eslint"],
+      "allowedVersions": "<10"
+    },
+    {
+      "description": [
+        "mysql を 8.4 (LTS) に固定する。web は PHP 7.2 の pdo_mysql で、9.0 で削除された",
+        "mysql_native_password を使わないと認証できない。PHP を 7.4 以降へ上げるまで 9 系への更新を止める (#160)。"
+      ],
+      "matchPackageNames": ["mysql"],
+      "allowedVersions": "<9"
+    },
+    {
+      "description": [
+        "loader-utils を 2 系に固定する (package.json の overrides)。",
+        "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
+        "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",
+        "CI にビルドのジョブが無く破損を検出できないため、3 つのローダーを移行するまで major 更新を止める (#147)。"
+      ],
+      "matchPackageNames": ["loader-utils"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": [
+        "ssri を 6 系に固定する。overrides で cacache@10 配下の ssri を置き換えており、",
+        "cacache@10 は ssri 5 系の API を前提とする。7 以降は API が変わり、",
+        "engines も Node 22.22.2 以上を要求して package.json の engines.node と食い違うため、",
+        "cacache を含む webpack 周りの依存を更新するまでこのルールを外さない。"
+      ],
+      "matchPackageNames": ["ssri"],
+      "allowedVersions": "<7"
     }
   ]
 }

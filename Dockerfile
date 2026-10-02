@@ -38,7 +38,7 @@ RUN a2enmod headers \
 
 COPY . /var/www
 
-RUN cd /var/www && npm install && npm run build && cp -a dist/* dist/.htaccess /var/www/html/
+RUN cd /var/www && npm install --ignore-scripts && npm run build && cp -a dist/* dist/.htaccess /var/www/html/
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/apache2.conf
 RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf

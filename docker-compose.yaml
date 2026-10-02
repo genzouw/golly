@@ -12,7 +12,12 @@ services:
       DB_USER: ${DB_USER:-${MYSQL_USER:-golly_user}}
       DB_PASS: ${DB_PASS:-${MYSQL_PASSWORD:-golly_pass}}
   db:
-    image: mysql:9.6
+    image: mysql:8.4
+    # web は PHP 7.2 の pdo_mysql で、caching_sha2_password で認証できない。
+    # 8.4 では mysql_native_password が既定で無効のため、有効化して既定の認証方式にする。
+    command:
+      - --mysql-native-password=ON
+      - --authentication-policy=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-golly_db}

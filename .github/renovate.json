@@ -53,6 +53,14 @@
     },
     {
       "description": [
+        "mysql を 8.4 (LTS) に固定する。web は PHP 7.2 の pdo_mysql で、9.0 で削除された",
+        "mysql_native_password を使わないと認証できない。PHP を 7.4 以降へ上げるまで 9 系への更新を止める (#160)。"
+      ],
+      "matchPackageNames": ["mysql"],
+      "allowedVersions": "<9"
+    },
+    {
+      "description": [
         "loader-utils を 2 系に固定する (package.json の overrides)。",
         "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
         "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",

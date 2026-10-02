@@ -25,6 +25,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-golly_pass}
     volumes:
       - dbdata:/var/lib/mysql
+      # ボリュームが空のとき（初回起動、または down -v の後）だけ、MYSQL_DATABASE に対して流れる。
+      - ./ddl.sql:/docker-entrypoint-initdb.d/ddl.sql:ro
 volumes:
   dbdata:
     driver: local

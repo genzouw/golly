@@ -6,9 +6,9 @@ name: docker
 # GitHub-hosted runner に入っている docker だけを使い、外部サービスと Secret は使わない。
 on:
   push:
-    branches: ['**']
+    branches: ["**"]
   pull_request:
-    branches: ['**']
+    branches: ["**"]
 
 concurrency:
   group: docker-${{ github.ref }}
@@ -26,6 +26,11 @@ jobs:
         with:
           persist-credentials: false
       - run: docker build --tag golly:ci .
+      # static/db.php の PDO (MySQL) は pdo_mysql に依存する。下の curl は静的な経路しか通らず、
+      # 拡張が欠けても検出できないため、DB を起動せずに確かめられるモジュール一覧で確認する。
+      # grep に --quiet を付けない。一致した時点で読み取りを止め、docker run 側が SIGPIPE で落ち得るため。
+      - name: PHP 拡張 (pdo_mysql) の有無を確認
+        run: docker run --rm golly:ci php -m | grep --line-regexp pdo_mysql
       # ビルドが通っても配信できないイメージを見逃さないよう、起動して応答を確かめる。
       # /questionnaires は実ファイルが無いパスで、.htaccess の rewrite が効いていれば index.html が返る。
       - name: コンテナを起動して配信を確認

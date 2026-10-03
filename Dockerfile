@@ -1,44 +1,24 @@
+# フロントエンド (Vue) をビルドするステージ。
+# Node のバージョンは package.json の engines.node を満たし、CI (.github/workflows/build.yml) と揃える。
+FROM node:24.21-bookworm-slim AS build
+
+WORKDIR /app
+
+# 依存の解決を先に済ませ、ソースだけの変更で npm ci のレイヤーを作り直さないようにする。
+COPY package.json package-lock.json .npmrc ./
+RUN npm ci --ignore-scripts
+
+COPY . .
+RUN npm run build
+
+# 配信用のステージ。Apache + PHP で dist (静的ファイルと static/ の PHP) を配信する。
+# stretch は apt のリポジトリが配布を終了しており apt-get update が失敗するため、apt を使わない。
+# PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql と opcache は追加の apt パッケージ無しでビルドできる。
 FROM php:7.2-apache-stretch
 
-RUN apt-get update \
-  && apt-get install --no-install-recommends -y \
-    apt-transport-https \
-    apt-utils \
-    build-essential \
-    curl \
-    debconf-utils \
-    gcc \
-    git \
-    vim \
-    gnupg2 \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    libpq-dev \
-    libzip-dev \
-    locales \
-    unzip \
-    zlib1g-dev \
-  && echo "en_US.UTF-8 UTF-8" >/etc/locale.gen \
-  && locale-gen \
-  && docker-php-ext-install -j$(nproc) zip gd opcache intl \
-  && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt-get install --no-install-recommends -y \
-    nodejs \
-  && rm -rf /var/lib/apt/lists/* \
-  ;
+# headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。
+# .htaccess 自体はベースイメージの docker-php.conf が /var/www/ に AllowOverride All を設定済みで有効。
+RUN docker-php-ext-install -j"$(nproc)" pdo_mysql opcache \
+  && a2enmod headers rewrite
 
-RUN docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache \
-  ;
-
-RUN a2enmod headers \
-  && a2enmod rewrite \
-  ;
-
-COPY . /var/www
-
-RUN cd /var/www && npm install --ignore-scripts && npm run build && cp -a dist/* dist/.htaccess /var/www/html/
-
-RUN sed -i '/LoadModule rewrite_module/s/^#//g' /etc/apache2/apache2.conf
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+COPY --from=build /app/dist/ /var/www/html/

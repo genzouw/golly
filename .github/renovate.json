@@ -47,7 +47,7 @@
     {
       "description": [
         "eslint を 9 系に固定する。neostandard と @babel/eslint-parser が ESLint 10 に未対応のため、",
-        "10 へ更新すると lint が壊れる。両方が対応したらこのルールを外す (#108)。"
+        "10 へ更新すると lint が壊れる。両方が対応したらこのルールを外す (#170)。"
       ],
       "matchPackageNames": ["eslint"],
       "allowedVersions": "<10"
@@ -65,21 +65,12 @@
         "loader-utils を 2 系に固定する (package.json の overrides)。",
         "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
         "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",
-        "CI にビルドのジョブが無く破損を検出できないため、3 つのローダーを移行するまで major 更新を止める (#147)。"
+        "build の CI は 3 つのローダーをどれも通らず (src に画像・フォントの import が無く、vue-style-loader は dev 設定のみ)、",
+        "破損を検出できない。3 つのローダーを移行するまで major 更新を止める (#147)。"
       ],
       "matchPackageNames": ["loader-utils"],
       "matchUpdateTypes": ["major"],
       "enabled": false
-    },
-    {
-      "description": [
-        "ssri を 6 系に固定する。overrides で cacache@10 配下の ssri を置き換えており、",
-        "cacache@10 は ssri 5 系の API を前提とする。7 以降は API が変わり、",
-        "engines も Node 22.22.2 以上を要求して package.json の engines.node と食い違うため、",
-        "cacache を含む webpack 周りの依存を更新するまでこのルールを外さない。"
-      ],
-      "matchPackageNames": ["ssri"],
-      "allowedVersions": "<7"
     }
   ]
 }

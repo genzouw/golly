@@ -76,7 +76,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         // split vendor js into its own file
         vendor: {
           // any required modules inside node_modules are extracted to vendor
-          test: /[\\/]node_modules[\\/].*\.js$/,
+          test: /[\\/]node_modules[\\/].*\.[cm]?js$/,
           name: 'vendor',
           chunks: 'all',
         },

@@ -65,6 +65,7 @@
         "loader-utils を 2 系に固定する (package.json の overrides)。",
         "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
         "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",
+        "build の CI は prod 設定だけを通すため vue-style-loader (dev 設定のみ) の破損は検出できない。",
         "3 つのローダーを移行するまで major 更新を止める (#147)。"
       ],
       "matchPackageNames": ["loader-utils"],

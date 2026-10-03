@@ -6,9 +6,9 @@ name: docker
 # GitHub-hosted runner に入っている docker だけを使い、外部サービスと Secret は使わない。
 on:
   push:
-    branches: ["**"]
+    branches: ['**']
   pull_request:
-    branches: ["**"]
+    branches: ['**']
 
 concurrency:
   group: docker-${{ github.ref }}

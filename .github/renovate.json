@@ -70,16 +70,6 @@
       "matchPackageNames": ["loader-utils"],
       "matchUpdateTypes": ["major"],
       "enabled": false
-    },
-    {
-      "description": [
-        "ssri を 6 系に固定する。overrides で cacache@10 配下の ssri を置き換えており、",
-        "cacache@10 は ssri 5 系の API を前提とする。7 以降は API が変わり、",
-        "engines も Node 22.22.2 以上を要求して package.json の engines.node と食い違うため、",
-        "cacache を含む webpack 周りの依存を更新するまでこのルールを外さない。"
-      ],
-      "matchPackageNames": ["ssri"],
-      "allowedVersions": "<7"
     }
   ]
 }

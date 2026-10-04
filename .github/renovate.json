@@ -59,18 +59,6 @@
       ],
       "matchPackageNames": ["mysql"],
       "allowedVersions": "<9"
-    },
-    {
-      "description": [
-        "loader-utils を 2 系に固定する (package.json の overrides)。",
-        "overrides は url-loader / file-loader / vue-style-loader にも効き、3 系で削除された",
-        "getOptions / parseQuery / stringifyRequest を呼ぶ 3 つが実行時に落ちる。",
-        "build の CI は 3 つのローダーをどれも通らず (src に画像・フォントの import が無く、vue-style-loader は dev 設定のみ)、",
-        "破損を検出できない。3 つのローダーを移行するまで major 更新を止める (#147)。"
-      ],
-      "matchPackageNames": ["loader-utils"],
-      "matchUpdateTypes": ["major"],
-      "enabled": false
     }
   ]
 }

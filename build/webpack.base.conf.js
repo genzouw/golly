@@ -6,6 +6,9 @@ const vueLoaderConfig = require('./vue-loader.conf')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 
+// これ以下のサイズのアセットは data URL として埋め込み、超えるものはファイルとして出力する (旧 url-loader の limit)
+const ASSET_INLINE_LIMIT = 10000
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -49,27 +52,21 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
+        type: 'asset',
+        parser: { dataUrlCondition: { maxSize: ASSET_INLINE_LIMIT } },
+        generator: { filename: utils.assetsPath('img/[name].[contenthash:7][ext]') }
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
-        }
+        type: 'asset',
+        parser: { dataUrlCondition: { maxSize: ASSET_INLINE_LIMIT } },
+        generator: { filename: utils.assetsPath('media/[name].[contenthash:7][ext]') }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
+        type: 'asset',
+        parser: { dataUrlCondition: { maxSize: ASSET_INLINE_LIMIT } },
+        generator: { filename: utils.assetsPath('fonts/[name].[contenthash:7][ext]') }
       }
     ]
   },

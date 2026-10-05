@@ -13,8 +13,8 @@ services:
       DB_PASS: ${DB_PASS:-${MYSQL_PASSWORD:-golly_pass}}
   db:
     image: mysql:8.4
-    # web は PHP 7.2 の pdo_mysql で、caching_sha2_password で認証できない。
-    # 8.4 では mysql_native_password が既定で無効のため、有効化して既定の認証方式にする。
+    # 以前の web (PHP 7.2) は caching_sha2_password で認証できなかったため、mysql_native_password を有効化している。
+    # 現在の PHP 8.4 は caching_sha2_password に対応しているが、実環境の DB での接続確認が済むまで互換のため残している。
     command:
       - --mysql-native-password=ON
       - --authentication-policy=mysql_native_password

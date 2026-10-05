@@ -12,9 +12,10 @@ COPY . .
 RUN npm run build
 
 # 配信用のステージ。Apache + PHP で dist (静的ファイルと static/ の PHP) を配信する。
-# stretch は apt のリポジトリが配布を終了しており apt-get update が失敗するため、apt を使わない。
+# 旧ベースイメージ (php:7.2-apache-stretch) は PHP 7.2 と Debian 9 がサポート終了で、Snyk が 400 件超の脆弱性を報告していた。
+# サポート中の PHP と Debian (trixie) のイメージを使う。
 # PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql と opcache は追加の apt パッケージ無しでビルドできる。
-FROM php:7.2-apache-stretch
+FROM php:8.4-apache-trixie
 
 # headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。
 # .htaccess 自体はベースイメージの docker-php.conf が /var/www/ に AllowOverride All を設定済みで有効。

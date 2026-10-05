@@ -14,12 +14,17 @@ RUN npm run build
 # 配信用のステージ。Apache + PHP で dist (静的ファイルと static/ の PHP) を配信する。
 # 旧ベースイメージ (php:7.2-apache-stretch) は PHP 7.2 と Debian 9 がサポート終了で、Snyk が 400 件超の脆弱性を報告していた。
 # サポート中の PHP と Debian (trixie) のイメージを使う。
-# PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql と opcache は追加の apt パッケージ無しでビルドできる。
-FROM php:8.6-rc-zts-alpine3.24
+# PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql は追加の apt パッケージ無しでビルドできる。
+# opcache は PHP 8.5 から本体に組み込まれたため、docker-php-ext-install の対象にしない (指定するとビルドが失敗する)。
+FROM php:8.5-apache-trixie
 
 # headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。
 # .htaccess 自体はベースイメージの docker-php.conf が /var/www/ に AllowOverride All を設定済みで有効。
-RUN docker-php-ext-install -j"$(nproc)" pdo_mysql opcache \
+# Snyk が報告する Debian の perl の脆弱性は、パッチ版が出るまでベースイメージに残る。ビルド時に apt-get upgrade で取り込む。
+RUN apt-get update \
+  && apt-get upgrade -y --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-install -j"$(nproc)" pdo_mysql \
   && a2enmod headers rewrite
 
 # php.ini が無いと PHP 8 は E_ALL の警告を出力し、JSON レスポンスの前に混ざる。

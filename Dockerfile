@@ -16,6 +16,9 @@ RUN npm run build
 # サポート中の PHP と Debian (trixie) のイメージを使う。
 # PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql は追加の apt パッケージ無しでビルドできる。
 # opcache は PHP 8.5 から本体に組み込まれたため、docker-php-ext-install の対象にしない (指定するとビルドが失敗する)。
+# タグの種類 (apache-trixie) を変えない。Snyk の自動 PR は脆弱性数だけで alpine や zts、rc 版への変更を提案するが、
+# alpine は a2enmod と Apache を持たず、rc は安定版ではなく、zts では拡張のビルドが失敗する (#180)。
+# 変更が必要なら docker ワークフローが通ることを確認してから取り込む。
 FROM php:8.5-apache-trixie
 
 # headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。

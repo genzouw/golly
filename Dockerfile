@@ -16,11 +16,18 @@ RUN npm run build
 # サポート中の PHP と Debian (trixie) のイメージを使う。
 # PHP が使う拡張は PDO (MySQL) だけで、pdo_mysql は追加の apt パッケージ無しでビルドできる。
 # opcache は PHP 8.5 から本体に組み込まれたため、docker-php-ext-install の対象にしない (指定するとビルドが失敗する)。
+# タグの種類 (apache-trixie) を変えない。Snyk の自動 PR は脆弱性数だけで alpine や zts、rc 版への変更を提案するが、
+# alpine は a2enmod と Apache を持たず、rc は安定版ではない (#180)。zts は Apache の mod_php (prefork) と組み合わせる NTS 版とは別の系統で、apache タグの代わりにはならない。
+# 変更が必要なら docker ワークフローが通ることを確認してから取り込む。
 FROM php:8.5-apache-trixie
 
 # headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。
 # .htaccess 自体はベースイメージの docker-php.conf が /var/www/ に AllowOverride All を設定済みで有効。
-RUN docker-php-ext-install -j"$(nproc)" pdo_mysql \
+# Snyk が報告する Debian の perl の脆弱性は、パッチ版が出るまでベースイメージに残る。ビルド時に apt-get upgrade で取り込む。
+RUN apt-get update \
+  && apt-get upgrade -y --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/* \
+  && docker-php-ext-install -j"$(nproc)" pdo_mysql \
   && a2enmod headers rewrite
 
 # php.ini が無いと PHP 8 は E_ALL の警告を出力し、JSON レスポンスの前に混ざる。

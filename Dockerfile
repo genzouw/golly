@@ -19,7 +19,7 @@ RUN npm run build
 # タグの種類 (apache-trixie) を変えない。Snyk の自動 PR は脆弱性数だけで alpine や zts、rc 版への変更を提案するが、
 # alpine は a2enmod と Apache を持たず、rc は安定版ではない (#180)。zts は Apache の mod_php (prefork) と組み合わせる NTS 版とは別の系統で、apache タグの代わりにはならない。
 # 変更が必要なら docker ワークフローが通ることを確認してから取り込む。
-FROM php:8.6-rc-zts-alpine3.24
+FROM php:8.5-apache-trixie
 
 # headers と rewrite は dist/.htaccess (CORS ヘッダーと SPA 用の rewrite) が使う。
 # .htaccess 自体はベースイメージの docker-php.conf が /var/www/ に AllowOverride All を設定済みで有効。

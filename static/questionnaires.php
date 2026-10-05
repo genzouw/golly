@@ -56,7 +56,7 @@ if (!is_null($id) || !is_null($qcode)) {
     // . ' from choices where questionnaire_id = ? order by id';
     $sql = 'select id, choice, selected_number from choices where questionnaire_id = ? order by id';
     $stmt = $pdo->prepare($sql);
-    if ($stmt && $stmt->execute([$data['id']])) {
+    if ($data && $stmt && $stmt->execute([$data['id']])) {
         $data['choices'] = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: array();
     }
 }

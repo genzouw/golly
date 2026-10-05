@@ -22,4 +22,8 @@ FROM php:8.4-apache-trixie
 RUN docker-php-ext-install -j"$(nproc)" pdo_mysql opcache \
   && a2enmod headers rewrite
 
+# php.ini が無いと PHP 8 は E_ALL の警告を出力し、JSON レスポンスの前に混ざる。
+# 本番向けの設定 (display_errors=Off) を php.ini として有効にする。
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
 COPY --from=build /app/dist/ /var/www/html/

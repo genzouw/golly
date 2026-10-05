@@ -12,7 +12,7 @@ $id = null;
 
 switch (mb_strtolower($_SERVER['REQUEST_METHOD'])) {
     case 'put':
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? null;
 
         $sql = 'update choices set selected_number = selected_number + 1 where id = ?;';
         $pdo->prepare($sql)->execute([$id]);

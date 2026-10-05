@@ -55,7 +55,7 @@
     {
       "description": [
         "mysql を 8.4 (LTS) に固定する。9.0 で mysql_native_password が削除されたため、",
-        "docker-compose.yaml の互換設定が残る間は 9 系への更新を止める。web は PHP 8.4 に更新済みで、実環境の接続確認後に設定ごと外せる (#160)。"
+        "docker-compose.yaml の互換設定が残る間は 9 系への更新を止める。web は PHP 8 系 (Dockerfile のベースイメージ) に更新済みで、実環境の接続確認後に設定ごと外せる (#160)。"
       ],
       "matchPackageNames": ["mysql"],
       "allowedVersions": "<9"

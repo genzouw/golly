@@ -34,11 +34,18 @@ devConfigPromise.then(devConfig => {
   const spawn = require('cross-spawn')
   const runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' })
 
+  // server.stop() の成否にかかわらず終了させ、nightwatch の終了コードを失わないようにする
+  // code はシグナルで終了した場合に null になり、process.exit(null) は 0 扱いになるため 1 に倒す
   runner.on('exit', function (code) {
-    server.stop().then(() => process.exit(code))
+    const done = () => process.exit(code === null ? 1 : code)
+    server.stop().then(done, done)
   })
 
   runner.on('error', function (err) {
-    server.stop().then(() => { throw err })
+    const fail = () => {
+      console.error(err)
+      process.exit(1)
+    }
+    server.stop().then(fail, fail)
   })
 })

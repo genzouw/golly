@@ -35,12 +35,10 @@ devConfigPromise.then(devConfig => {
   const runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' })
 
   runner.on('exit', function (code) {
-    server.stop()
-    process.exit(code)
+    server.stop().then(() => process.exit(code))
   })
 
   runner.on('error', function (err) {
-    server.stop()
-    throw err
+    server.stop().then(() => { throw err })
   })
 })

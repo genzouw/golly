@@ -1,6 +1,5 @@
 'use strict'
 
-const babelParser = require('@babel/eslint-parser')
 const globals = require('globals')
 const neostandard = require('neostandard')
 const pluginVue = require('eslint-plugin-vue')
@@ -14,9 +13,6 @@ module.exports = [
   {
     files: ['**/*.js', '**/*.vue'],
     languageOptions: {
-      parserOptions: {
-        parser: babelParser
-      },
       globals: {
         ...globals.browser
       }

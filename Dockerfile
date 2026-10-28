@@ -1,6 +1,6 @@
 # フロントエンド (Vue) をビルドするステージ。
 # Node のバージョンは package.json の engines.node を満たし、CI (.github/workflows/build.yml) と揃える。
-FROM node:24.22-bookworm-slim AS build
+FROM node:26.12-bookworm-slim AS build
 
 WORKDIR /app
 

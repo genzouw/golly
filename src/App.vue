@@ -21,11 +21,11 @@ export default {
   name: 'App',
   data () {
     return {
-      'serviceName': 'Golly'
+      serviceName: 'Golly'
     }
   },
   mounted: function () {
-    var to = this.$route
+    const to = this.$route
     if (to.meta.title) {
       document.title = to.meta.title + ' - ' + this.serviceName
     }

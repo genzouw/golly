@@ -1,0 +1,56 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "dependencyDashboard": false,
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "semanticCommits": "enabled",
+  "semanticCommitScope": "deps",
+  "timezone": "Asia/Tokyo",
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "html": {
+    "description": [
+      "html manager を無効化する。",
+      "index.html は Bootswatch 4 のテーマ CSS を CDN から読んでいる。",
+      "Bootswatch 5 は配布パスとクラス名が変わるため、URL だけ差し替えると画面が壊れる。",
+      "CI にブラウザ実行の検証が無くこの破損を検出できないため、対象外にする。"
+    ],
+    "enabled": false
+  },
+  "prConcurrentLimit": 5,
+  "labels": ["dependencies"],
+  "reviewers": ["genzouw"],
+  "vulnerabilityAlerts": {
+    "description": [
+      "脆弱性修正は minimumReleaseAge と schedule の対象外にして即時 PR にする。",
+      "Dependabot の cooldown が security updates に効かなかったのと同じ挙動を保つため。"
+    ],
+    "minimumReleaseAge": null,
+    "schedule": [],
+    "addLabels": ["security"]
+  },
+  "packageRules": [
+    {
+      "description": [
+        "依存更新はすべて chore プレフィックスで出す。",
+        "config:recommended に含まれる :semanticPrefixFixDepsChoreOthers は本番依存を fix にするが、",
+        "fix は release 生成ツールがリリース対象として扱うため、Dependabot 時代と同じ chore に固定する。"
+      ],
+      "matchPackageNames": ["*"],
+      "semanticCommitType": "chore"
+    },
+    {
+      "description": "GitHub Actions の更新のプレフィックスとラベル (Dependabot の commit-message.prefix と同じ)",
+      "matchManagers": ["github-actions"],
+      "semanticCommitType": "ci",
+      "addLabels": ["github-actions"]
+    },
+    {
+      "description": [
+        "mysql を 8.4 (LTS) に固定する。9.0 で mysql_native_password が削除されたため、",
+        "docker-compose.yaml の互換設定が残る間は 9 系への更新を止める。web は PHP 8 系 (Dockerfile のベースイメージ) に更新済みで、実環境の接続確認後に設定ごと外せる (#160)。"
+      ],
+      "matchPackageNames": ["mysql"],
+      "allowedVersions": "<9"
+    }
+  ]
+}

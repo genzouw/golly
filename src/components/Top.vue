@@ -39,24 +39,24 @@
       </div>
     </div>
 
-    <form @submit.prevent>
+    <VeeForm ref="form" @submit="ignoreSubmit">
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <input type="text" id="question" name="question" placeholder="質問" class="form-control form-control" v-model="question" required v-validate="'required|min:3'" data-vv-as="質問" @keypress.enter.prevent.self />
-            <div class="invalid-feedback">{{ errors.first('question') }}</div>
+            <VeeField type="text" id="question" name="question" placeholder="質問" class="form-control form-control" v-model="question" required :rules="questionRules" @keypress.enter.prevent.self />
+            <VeeErrorMessage as="div" name="question" class="invalid-feedback" />
           </div>
           <div class="form-group">
             <button class="btn btn-primary btn-sm float-right mb-1" @click.prevent.self="appendChoice">選択肢を追加</button>
             <ol>
               <li v-for="(it, index) in choices" v-bind:key="index">
                 <div class="form-inline input-group">
-                  <input type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required v-validate="'required|min:1'" data-vv-as="回答の選択肢" />
+                  <VeeField type="text" v-bind:name="'choice' + index" placeholder="回答の選択肢" class="form-control col-sm-10" v-model="it.text" required :rules="choiceRules" />
                   <div class="input-group-append">
                     <div class="input-group-text bg-secondary" @click.prevent.self="removeChoice(index)">×</div>
                   </div>
                 </div>
-                <div class="invalid-feedback">{{ errors.first('choice' + index) }}</div>
+                <VeeErrorMessage as="div" v-bind:name="'choice' + index" class="invalid-feedback" />
               </li>
             </ol>
           </div>
@@ -70,34 +70,40 @@
           </div>
         </div>
       </div>
-    </form>
+    </VeeForm>
 
   </div>
 </template>
 
 <script>
-var $ = require('jquery')
+import { Form as VeeForm, Field as VeeField, ErrorMessage as VeeErrorMessage } from 'vee-validate'
+import { requiredMin } from '@/validation'
+
+const $ = require('jquery')
 
 export default {
+  components: { VeeForm, VeeField, VeeErrorMessage },
   data () {
     return {
-      'message': '',
-      'message_classes': '',
-      'question': '',
-      'choices': [
+      questionRules: requiredMin('質問', 3),
+      choiceRules: requiredMin('回答の選択肢', 1),
+      message: '',
+      message_classes: '',
+      question: '',
+      choices: [
         { text: '' }
       ],
       // 'apiUrl': '//localhost:8081',
-      'apiUrl': '',
-      'input_submit_disabled': false
+      apiUrl: '',
+      input_submit_disabled: false
     }
   },
   methods: {
-    'regist': function (e) {
-      let that = this
+    regist: function (e) {
+      const that = this
 
-      that.$validator.validate().then(function (ok) {
-        if (!ok) {
+      that.$refs.form.validate().then(function (result) {
+        if (!result.valid) {
           return false
         }
 
@@ -106,8 +112,8 @@ export default {
           type: 'POST',
           dataType: 'json',
           data: $.param({
-            'question': that.question,
-            'choices': $.map(that.choices, (it) => { return it.text.trim() }).filter((it) => { return it && it.length > 0 })
+            question: that.question,
+            choices: $.map(that.choices, (it) => { return it.text.trim() }).filter((it) => { return it && it.length > 0 })
           }),
           complete: function () {
 
@@ -119,7 +125,7 @@ export default {
             setTimeout(function () {
               that.$router.push(
                 {
-                  'path': '/show/' + data.qcode
+                  path: '/show/' + data.qcode
                 }
               )
             }, 3000)
@@ -131,13 +137,16 @@ export default {
         })
       })
     },
-    'appendChoice': function () {
-      this.choices.push({ 'text': '' })
+    appendChoice: function () {
+      this.choices.push({ text: '' })
     },
-    'removeChoice': function (i) {
+    removeChoice: function (i) {
       console.log(i)
       this.choices.splice(i, 1)
-    }
+    },
+    // 送信は「登録」ボタンの regist で行う。VeeForm は submit ハンドラが無いと
+    // 検証通過後にネイティブ送信するため、何もしないハンドラを渡して止める
+    ignoreSubmit: function () {}
   }
 }
 </script>

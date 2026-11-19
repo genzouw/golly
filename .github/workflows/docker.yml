@@ -1,0 +1,43 @@
+name: docker
+
+# Dockerfile を通る経路 (docker compose の web) を検証する。
+# build.yml はホストの Node で npm run build を実行するだけで、Dockerfile のベースイメージや
+# Node のバージョンが壊れても検出できない。
+# GitHub-hosted runner に入っている docker だけを使い、外部サービスと Secret は使わない。
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: docker build --tag golly:ci .
+      # static/db.php の PDO (MySQL) は pdo_mysql に依存する。下の curl は静的な経路しか通らず、
+      # 拡張が欠けても検出できないため、DB を起動せずに確かめられるモジュール一覧で確認する。
+      # grep に --quiet を付けない。一致した時点で読み取りを止め、docker run 側が SIGPIPE で落ち得るため。
+      - name: PHP 拡張 (pdo_mysql) の有無を確認
+        run: docker run --rm golly:ci php -m | grep --line-regexp pdo_mysql
+      # ビルドが通っても配信できないイメージを見逃さないよう、起動して応答を確かめる。
+      # /questionnaires は実ファイルが無いパスで、.htaccess の rewrite が効いていれば index.html が返る。
+      - name: コンテナを起動して配信を確認
+        run: |
+          docker run --detach --name golly --publish 8080:80 golly:ci
+          trap 'docker logs golly; docker rm --force golly' EXIT
+          for path in / /questionnaires; do
+            curl --fail --silent --show-error --retry 10 --retry-delay 1 --retry-all-errors \
+              --output /dev/null "http://localhost:8080${path}"
+          done

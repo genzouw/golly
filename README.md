@@ -35,4 +35,19 @@ npm test
 `index.html` の inline `<script>` を変えたら、配信する前に、genzouw/genzouw.com の `terraform/environments/aws/main.tf` の `csp_directives_golly` のハッシュを更新して apply してください。
 ハッシュはソースではなく、ビルド後の `dist/index.html` から計算します。照合のコマンドは genzouw/genzouw.com の `terraform/README.md` の「golly の静的コンテンツ」にあります。
 
+## Docker Compose
+
+``` bash
+docker compose up --build
+```
+
+db は `mysql:8.4` を使う。MySQL 5.7 で作成した `dbdata` ボリュームは 8.4 が読めず、db が起動しない
+（5.7 から 8.4 へ直接アップグレードできないため）。`ddl.sql` は db の初回起動時（ボリュームが空のとき）に自動で流れるため、
+作り直せる開発用データである。5.7 時代のボリュームが残っている環境では次で捨ててから起動する。残したいデータがある場合は、
+先に 8.0 を経由してダンプ・リストアする。
+
+``` bash
+docker compose down -v
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

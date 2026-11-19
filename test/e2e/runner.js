@@ -12,10 +12,8 @@ let server
 devConfigPromise.then(devConfig => {
   const devServerOptions = devConfig.devServer
   const compiler = webpack(webpackConfig)
-  server = new DevServer(compiler, devServerOptions)
-  const port = devServerOptions.port
-  const host = devServerOptions.host
-  return server.listen(port, host)
+  server = new DevServer(devServerOptions, compiler)
+  return server.start()
 })
 .then(() => {
   // 2. run the nightwatch test suite against it
@@ -36,13 +34,18 @@ devConfigPromise.then(devConfig => {
   const spawn = require('cross-spawn')
   const runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' })
 
+  // server.stop() の成否にかかわらず終了させ、nightwatch の終了コードを失わないようにする
+  // code はシグナルで終了した場合に null になり、process.exit(null) は 0 扱いになるため 1 に倒す
   runner.on('exit', function (code) {
-    server.close()
-    process.exit(code)
+    const done = () => process.exit(code === null ? 1 : code)
+    server.stop().then(done, done)
   })
 
   runner.on('error', function (err) {
-    server.close()
-    throw err
+    const fail = () => {
+      console.error(err)
+      process.exit(1)
+    }
+    server.stop().then(fail, fail)
   })
 })

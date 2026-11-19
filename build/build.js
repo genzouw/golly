@@ -3,10 +3,10 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 
-const ora = require('ora')
-const rm = require('rimraf')
+const ora = require('ora').default
+const { rimraf } = require('rimraf')
 const path = require('path')
-const chalk = require('chalk')
+const chalk = require('chalk').default
 const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
@@ -14,8 +14,7 @@ const webpackConfig = require('./webpack.prod.conf')
 const spinner = ora('building for production...')
 spinner.start()
 
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
-  if (err) throw err
+rimraf(path.join(config.build.assetsRoot, config.build.assetsSubDirectory)).then(() => {
   webpack(webpackConfig, (err, stats) => {
     spinner.stop()
     if (err) throw err
@@ -38,4 +37,4 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Opening index.html over file:// won\'t work.\n'
     ))
   })
-})
+}).catch(err => { throw err })

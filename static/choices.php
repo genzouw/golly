@@ -1,15 +1,8 @@
 <?php
 
-$dsn = 'mysql:dbname=golly_db;host=db;port=3306';
-$user = 'golly_user';
-$password = 'golly_pass';
+require_once __DIR__.'/db.php';
 
-try {
-    $pdo = new PDO($dsn, $user, $password);
-} catch (PDOException $e) {
-    print('Error:'.$e->getMessage());
-    die();
-}
+$pdo = create_pdo();
 
 header('Content-Type: application/json;charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
@@ -19,7 +12,7 @@ $id = null;
 
 switch (mb_strtolower($_SERVER['REQUEST_METHOD'])) {
     case 'put':
-        $id = $_GET['id'];
+        $id = $_GET['id'] ?? null;
 
         $sql = 'update choices set selected_number = selected_number + 1 where id = ?;';
         $pdo->prepare($sql)->execute([$id]);
